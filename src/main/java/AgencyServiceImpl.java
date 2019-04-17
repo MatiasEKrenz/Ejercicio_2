@@ -15,7 +15,7 @@ public class AgencyServiceImpl implements AgencyService {
 
     @Override
     public Agency[] getAgencies(String site_id, String payment_method_id, String near_to, String limit,
-                                          String offset, String criterio_orde) {
+                                          String offset, String criterio_orde) throws CustomException {
 
         Agency[] agencies;
         String url = "https://api.mercadolibre.com/sites/" + site_id + "/payment_methods/" + payment_method_id + "/agencies?near_to=" + near_to;
@@ -34,9 +34,7 @@ public class AgencyServiceImpl implements AgencyService {
             agencies = new Gson().fromJson(jsonObject.get("results").getAsJsonArray(), Agency[].class);
 
         } catch (IOException e) {
-            System.out.println("Ocurrio un error al traer las agencias.");
-            e.printStackTrace();
-            return null;
+            throw new CustomException("Ocurrio un error al traer las agencias.");
         }
 
         switch(criterio_orde)

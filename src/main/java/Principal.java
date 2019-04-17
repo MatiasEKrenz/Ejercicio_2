@@ -1,4 +1,7 @@
 import com.google.gson.Gson;
+
+import java.io.IOException;
+
 import static spark.Spark.*;
 
 public class Principal {
@@ -10,10 +13,14 @@ public class Principal {
         get("/agencias/:site_id/:payment_method_id/:near_to", (request, response) -> {
             //...
             response.type("application/json");
-            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(
-                    agencyService.getAgencies(request.params(":site_id"), request.params(":payment_method_id"),
-                            request.params(":near_to"), request.queryParams("limit"), request.queryParams("offset"),
-                            request.queryParams("criterio_orden")))));
+            try{
+                return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(
+                        agencyService.getAgencies(request.params(":site_id"), request.params(":payment_method_id"),
+                                request.params(":near_to"), request.queryParams("limit"), request.queryParams("offset"),
+                                request.queryParams("criterio_orden")))));
+            } catch (CustomException e){
+                return new Gson().toJson(new StandardResponse(StatusResponse.ERROR, e.getMessage()));
+            }
         });
 
     }
