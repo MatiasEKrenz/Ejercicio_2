@@ -15,13 +15,13 @@ public class Principal {
 
         final AgencyService agencyService = new AgencyServiceImpl(); // final para decir que no lo voy a modificar mas
 
-        get("/agencias/:site_id/:payment_method_id/:near_to/:limit/:offset", (request, response) -> {
+        get("/agencias/:site_id/:payment_method_id/:near_to", (request, response) -> {
             //...
             response.type("application/json");
             return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, new Gson().toJsonTree(
                     agencyService.getAgencies(request.params(":site_id"), request.params(":payment_method_id"),
-                            request.params(":near_to"), request.params(":limit"), request.params(":offset")/*,
-                            request.params(":criterio_orden")*/))));
+                            request.params(":near_to"), request.queryParams("limit"), request.queryParams("offset"),
+                            request.queryParams("criterio_orden")))));
         });
 
 

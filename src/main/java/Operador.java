@@ -15,7 +15,7 @@ public class Operador {
         return a;
     }
 
-    public static <T extends Comparable<T>> T criterioDescendente(T a[]) {
+    /*public static <T extends Comparable<T>> T criterioDescendente(T a[]) {
 
         T min = a[0];
         for (int i = 1; i < a.length; i++) {
@@ -26,6 +26,6 @@ public class Operador {
             }
         }
         return min;
-    }
+    }*/
 
 }

@@ -1,11 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.net.URL;
 import java.net.URLConnection;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -18,8 +15,9 @@ public class AgencyServiceImpl implements AgencyService {
 
     @Override
     public Agency[] getAgencies(String site_id, String payment_method_id, String near_to, String limit,
-                                          String offset/*, String criterio_orde*/) {
+                                          String offset, String criterio_orde) {
 
+        Agency[] agencies;
         String url = "https://api.mercadolibre.com/sites/" + site_id + "/payment_methods/" + payment_method_id + "/agencies?near_to=" + near_to;
 
         if(limit != null){
@@ -27,39 +25,41 @@ public class AgencyServiceImpl implements AgencyService {
         }
         if(offset != null){
             url = url + "&offset=" + offset;
+            //url = url + offset;
         }
 
         try {
             String data = readUrl(url);
 
             JsonObject jsonObject = new JsonParser().parse(data).getAsJsonObject();
-            Agency[] agencies = new Gson().fromJson(jsonObject.get("results").getAsJsonArray(), Agency[].class);
+            agencies = new Gson().fromJson(jsonObject.get("results").getAsJsonArray(), Agency[].class);
 
-            for (Agency agency : agencies){
-                System.out.println("\n" + agency.getDescripcion());
-            }
-
-            return agencies;
         } catch (IOException e) {
             System.out.println("Ocurrio un error al traer las agencias.");
             e.printStackTrace();
             return null;
         }
 
-    /*    if (criterio_orde.equals("address_line")){
-            Agency.criterio = Agency.Criterio.ADDRESS_LINE;
-        }
-        else if (criterio_orde.equals("agency_code")){
-            Agency.criterio = Agency.Criterio.AGENCY_CODE;
-        }
-        else if (criterio_orde.equals("distance")){
-            Agency.criterio = Agency.Criterio.DISTANCE;
+        switch(criterio_orde)
+        {
+            case "address_line":
+                Agency.criterio = Agency.Criterio.ADDRESS_LINE;
+                break;
+
+            case "agency_code":
+                Agency.criterio = Agency.Criterio.AGENCY_CODE;
+                break;
+
+            case "distance":
+                Agency.criterio = Agency.Criterio.DISTANCE;
+                break;
+
+            default :
+                Agency.criterio = Agency.Criterio.ADDRESS_LINE;
+                break;
         }
 
-
-        agencies = Operador.criterioAscendente(agencies);
-
-*/
+        return Operador.criterioAscendente(agencies);
 
     }
 
