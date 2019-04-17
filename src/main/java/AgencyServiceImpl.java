@@ -9,8 +9,14 @@ import com.google.gson.JsonParser;
 
 public class AgencyServiceImpl implements AgencyService {
 
+    private String url;
 
     public AgencyServiceImpl() {
+    }
+
+    @Override
+    public String getURL() {
+        return url;
     }
 
     @Override
@@ -18,7 +24,7 @@ public class AgencyServiceImpl implements AgencyService {
                                           String offset, String criterio_orde) throws CustomException {
 
         Agency[] agencies;
-        String url = "https://api.mercadolibre.com/sites/" + site_id + "/payment_methods/" + payment_method_id + "/agencies?near_to=" + near_to;
+        url = "https://api.mercadolibre.com/sites/" + site_id + "/payment_methods/" + payment_method_id + "/agencies?near_to=" + near_to;
 
         if(limit != null){
             url = url + "&limit=" + limit;
@@ -34,7 +40,7 @@ public class AgencyServiceImpl implements AgencyService {
             agencies = new Gson().fromJson(jsonObject.get("results").getAsJsonArray(), Agency[].class);
 
         } catch (IOException e) {
-            throw new CustomException("Ocurrio un error al traer las agencias.");
+            throw new CustomException("Ocurrio un error al traer las agencias, parametros insuficientes.");
         }
 
         switch(criterio_orde)
