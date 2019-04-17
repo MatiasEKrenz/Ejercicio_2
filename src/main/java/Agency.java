@@ -1,13 +1,9 @@
-import com.sun.org.apache.xalan.internal.xsltc.dom.AdaptiveResultTreeImpl;
-
-import java.util.PrimitiveIterator;
-
 public class Agency implements Comparable <Agency>{
 
     public enum Criterio {
         ADDRESS_LINE,
         AGENCY_CODE,
-        DISTANCE;
+        DISTANCE
     }
 
     private Address address;
@@ -126,7 +122,7 @@ public class Agency implements Comparable <Agency>{
                 return agency_code.compareTo(o.getAgency_code());
 
             case DISTANCE:
-                return distance.compareTo(o.getDistance());
+                return Double.valueOf(distance).compareTo(Double.valueOf(o.getDistance()));
 
             default :
                 return address.getAddress_line().compareTo(o.getAddress().getAddress_line());

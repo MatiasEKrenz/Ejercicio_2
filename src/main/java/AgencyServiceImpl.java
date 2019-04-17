@@ -25,7 +25,6 @@ public class AgencyServiceImpl implements AgencyService {
         }
         if(offset != null){
             url = url + "&offset=" + offset;
-            //url = url + offset;
         }
 
         try {
