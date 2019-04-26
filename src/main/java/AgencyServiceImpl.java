@@ -32,6 +32,9 @@ public class AgencyServiceImpl implements AgencyService {
         if(offset != null){
             url = url + "&offset=" + offset;
         }
+        if(criterio_orde != null){
+            url = url + "&criterio_orde=" + criterio_orde;
+        }
 
         try {
             String data = readUrl(url);
@@ -43,26 +46,28 @@ public class AgencyServiceImpl implements AgencyService {
             throw new CustomException("Ocurrio un error al traer las agencias, parametros insuficientes.");
         }
 
-        switch(criterio_orde)
-        {
-            case "address_line":
-                Agency.criterio = Agency.Criterio.ADDRESS_LINE;
-                break;
+        if(criterio_orde != null) {
+            switch (criterio_orde) {
+                case "address_line":
+                    Agency.criterio = Agency.Criterio.ADDRESS_LINE;
+                    break;
 
-            case "agency_code":
-                Agency.criterio = Agency.Criterio.AGENCY_CODE;
-                break;
+                case "agency_code":
+                    Agency.criterio = Agency.Criterio.AGENCY_CODE;
+                    break;
 
-            case "distance":
-                Agency.criterio = Agency.Criterio.DISTANCE;
-                break;
+                case "distance":
+                    Agency.criterio = Agency.Criterio.DISTANCE;
+                    break;
 
-            default :
-                Agency.criterio = Agency.Criterio.ADDRESS_LINE;
-                break;
+                default:
+                    Agency.criterio = Agency.Criterio.ADDRESS_LINE;
+                    break;
+            }
+
+            return Operador.criterioAscendente(agencies);
         }
-
-        return Operador.criterioAscendente(agencies);
+        return  agencies;
 
     }
 
